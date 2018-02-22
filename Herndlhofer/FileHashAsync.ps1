@@ -38,7 +38,7 @@ function HashAsync
         throw [System.IO.Exception] 'blocksize is not power of 2.'
         return
       }
-      if (!($BlockSize -lt 131072 -or $BlockSize -gt 1024))
+      if (!($BlockSize -lt 1048576 -or $BlockSize -gt 1024))
       {
         throw [System.IO.Exception] 'blocksize is not inside the limits.'
         return
