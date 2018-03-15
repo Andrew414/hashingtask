@@ -1,4 +1,14 @@
-﻿function split($inFile, [Int32] $bufSize)
+  param(
+    [Parameter(Mandatory)]
+    [string]$FilePath,
+    [Parameter(Mandatory)]
+    [int]$BlockSize,
+    [Parameter(Mandatory = $true)]
+    [ValidateSet('SHA1', 'SHA256', 'SHA384', 'SHA512', 'MD5', 'MACTripleDES', 'RIPEMD160')]
+    [String]$Algorithm,
+    [ValidateSet([bool]$true, [bool]$false)]
+    $isAsync)
+function split($inFile, [Int32] $bufSize)
 {
   $stream = [System.IO.File]::OpenRead($inFile)
   $chunkNum = 0
@@ -26,19 +36,22 @@ function HashAsync
     [Parameter(Mandatory = $true)]
     [ValidateSet('SHA1', 'SHA256', 'SHA384', 'SHA512', 'MD5', 'MACTripleDES', 'RIPEMD160')]
     [String]$Algorithm,
-    [Parameter(Mandatory)]
     [ValidateSet([bool]$true, [bool]$false)]
-  $isAsync)
+    $isAsync)
   Measure-Command -Expression {
     try
     {
+      if (!$isAsync)
+      {
+        $isAsync = $true
+      }
       [System.Convert]::ToBoolean($isAsync)
       if (!(($BlockSize -ne 0) -and (($BlockSize -band ($BlockSize - 1)) -eq 0)))
       {
         throw [System.IO.Exception] 'blocksize is not power of 2.'
         return
       }
-      if (!($BlockSize -lt 1048576 -or $BlockSize -gt 1024))
+      if (!($BlockSize -lt 131072 -and $BlockSize -gt 1024))
       {
         throw [System.IO.Exception] 'blocksize is not inside the limits.'
         return
@@ -75,21 +88,6 @@ function HashAsync
         }
         $RunspacePool.Close()
         $RunspacePool.Dispose()
-        <# Method with jobs
-            $HashArray = @()
-            for ($i = 0; $i -lt $files; $i += 1)
-            {
-            $HashArray += @(Start-Job -ScriptBlock {
-            (Get-FileHash -Path "$((Get-Item  -Path $using:FilePath).Directory.FullName)\tmp\$((Get-Item  -Path $using:FilePath).Name).$using:i"  -Algorithm $using:Algorithm) | Select-Object -Property Hash
-            })
-            }
-
-            for ($i = 0; $i -lt $files; $i += 1)
-            {
-            $HashArray[$i] | Wait-Job
-            ( $(Receive-Job -Job $HashArray[$i]) | Select-Object -ExpandProperty Hash)| Add-Content  $outFile
-            }
-        #>
       }
       else 
       {
@@ -107,3 +105,8 @@ function HashAsync
     }
   }
 }
+      if (!$isAsync)
+      {
+        $isAsync = $true
+      }
+HashAsync -FilePath $FilePath -BlockSize $BlockSize -Algorithm $Algorithm -isAsync $isAsync
