@@ -9,6 +9,6 @@ namespace Implements.Static
             => string.Join(separator, strs);
 
         public static string[] GetEnumProperties(Type @enum)
-            => @enum.GetProperties().Select(x => x.Name).Where(x => x != "None").ToArray();
+            => Enum.GetNames(@enum).Where(x => x != "None").ToArray();
     }
 }
