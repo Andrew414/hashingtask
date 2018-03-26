@@ -38,7 +38,6 @@ namespace Implements.Services
             using (var ifs = new FileStream(opts.InputPath, FileMode.Open, FileAccess.Read, FileShare.Read, opts.BlockSize))
             using (var ofs = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.Write, opts.BlockSize))
             {
-
                 for (var offset = 0; offset < ifs.Length; offset += opts.BlockSize)
                 {
                     await sempahore.WaitAsync();
@@ -46,7 +45,9 @@ namespace Implements.Services
                     {
                         try
                         {
-                            await HashBytesAsync(ifs, ofs, opts.BlockSize);
+                            var chunk = await ReadBytesAsync(ifs, opts.BlockSize);
+                            var hash = GetHash(chunk);
+                            await WriteBytesAsync(ofs, hash);
                         }
                         finally
                         {
@@ -62,17 +63,26 @@ namespace Implements.Services
             }
         }
 
-        protected virtual async Task HashBytesAsync(Stream ifs, Stream ofs, int bufferSize)
+        protected virtual byte[] GetHash(byte[] buffer)
         {
-            var chunk = new byte[bufferSize];
-            
-            await ifs.ReadAsync(chunk, 0, chunk.Length);
-            
-            var hash = _hashManager.ComputeHash(chunk);
+            var hash = _hashManager.ComputeHash(buffer);
             var hex = BitConverter.ToString(hash).Replace("-", "");
+            var convertedHash = Encoding.ASCII.GetBytes($"{hex}{Environment.NewLine}");
 
-            await ofs.WriteAsync(Encoding.UTF8.GetBytes(hex), 0, hash.Length);
+            return convertedHash;
         }
+
+        protected virtual Task WriteBytesAsync(Stream ofs, byte[] buffer) 
+            => ofs.WriteAsync(buffer, 0, buffer.Length);
+
+        protected virtual async Task<byte[]> ReadBytesAsync(Stream ifs, int length)
+        {
+            var chunk = new byte[length];
+            await ifs.ReadAsync(chunk, 0, chunk.Length);
+
+            return chunk;
+        }
+
 
         protected virtual string BuildOutputPath(HashOptions opts)
             => $"{opts.InputPath}.hashes_{opts.HashAlgorithm}";

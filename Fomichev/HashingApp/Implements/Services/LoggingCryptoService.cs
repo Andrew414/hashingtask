@@ -35,26 +35,26 @@ namespace Implements.Services
             return base.HashFileAsync(opts);
         }
 
-        protected override async Task HashBytesAsync(Stream ifs, Stream ofs, int bufferSize)
+        protected override byte[] GetHash(byte[] buffer)
         {
-            var chunk = new byte[bufferSize];
             var sw = new Stopwatch();
-
-            sw.Reset();
             sw.Start();
-            await ifs.ReadAsync(chunk, 0, chunk.Length);
-            sw.Stop();
-            _diskStat.Add(sw.Elapsed);
-
-            sw.Reset();
-            sw.Start();
-            var hash = _hashManager.ComputeHash(chunk);
-            var hex = BitConverter.ToString(hash).Replace("-", "");
+            var hash = base.GetHash(buffer);
             sw.Stop();
             _hashStat.Add(sw.Elapsed);
 
-            var bytes = Encoding.ASCII.GetBytes($"{hex}{Environment.NewLine}");
-            await ofs.WriteAsync(bytes, 0, bytes.Length);
+            return hash;
+        }
+
+        protected override async Task<byte[]> ReadBytesAsync(Stream ifs, int length)
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            var chunk = await base.ReadBytesAsync(ifs, length);
+            sw.Stop();
+            _diskStat.Add(sw.Elapsed);
+
+            return chunk;
         }
 
         public (double avgRead, double avgHash, decimal read, decimal hash) GetStatistics(int blockSize)
