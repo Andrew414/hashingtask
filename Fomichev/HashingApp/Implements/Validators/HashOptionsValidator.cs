@@ -13,7 +13,8 @@ namespace Implements.Validators
         {
             RuleFor(x => x.BlockSize)
                 .InclusiveBetween((int) Math.Pow(2, 10), (int) Math.Pow(2, 20))
-                .WithMessage("Block size should be between 2^10 and 2^20 values.");
+                .Must(x => (x & (x - 1)) == 0)
+                .WithMessage("Block size only 2^n. Borders should be between 2^10 and 2^20 values.");
             RuleFor(x => x.InputPath)
                 .Must(File.Exists).WithMessage("Incorrect file path.");
             RuleFor(x => x.HashAlgorithm).IsInEnum()
