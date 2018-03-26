@@ -53,7 +53,8 @@ namespace Implements.Services
             sw.Stop();
             _hashStat.Add(sw.Elapsed);
 
-            await ofs.WriteAsync(Encoding.UTF8.GetBytes(hex), 0, hash.Length);
+            var bytes = Encoding.ASCII.GetBytes($"{hex}{Environment.NewLine}");
+            await ofs.WriteAsync(bytes, 0, bytes.Length);
         }
 
         public (double avgRead, double avgHash, decimal read, decimal hash) GetStatistics(int blockSize)
