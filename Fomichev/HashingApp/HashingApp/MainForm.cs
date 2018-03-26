@@ -23,21 +23,10 @@ namespace HashingApp
         private async void StartApp(object sender, EventArgs eventArgs)
         {
             SetErrorsVisibleSettings(false);
-
-            var filepath = FileDialog.FileName;
-            Enum.TryParse(ProgramModeComboBox.Text, out ProgramMode mode);
-            Enum.TryParse(HashAlgorithmComboBox.Text, out HashAlgorithm algo);
-            var blockSize = (int) BlockSizeNumericUpDown.Value;
-
+            
             try
             {
-                var opts = new HashOptions
-                {
-                    HashAlgorithm = algo,
-                    ProgramMode = mode,
-                    BlockSize = blockSize,
-                    InputPath = filepath,
-                };
+                var opts = ReadOptions();
 
                 var hashManager = new HashManager(opts.HashAlgorithm);
                 var validator = new HashOptionsValidator();
@@ -67,6 +56,26 @@ namespace HashingApp
             sb.AppendLine();
 
             return sb.ToString();
+        }
+
+        private HashOptions ReadOptions()
+        {
+            var filepath = FileDialog.FileName;
+            var blockSize = (int)BlockSizeNumericUpDown.Value;
+
+            Enum.TryParse(ProgramModeComboBox.Text, out ProgramMode mode);
+            ProgramModeComboBox.Text = mode.ToString();
+
+            Enum.TryParse(HashAlgorithmComboBox.Text, out HashAlgorithm algo);
+            HashAlgorithmComboBox.Text = algo.ToString();
+
+            return new HashOptions
+            {
+                HashAlgorithm = algo,
+                ProgramMode = mode,
+                BlockSize = blockSize,
+                InputPath = filepath,
+            };
         }
 
         private void SetErrorsVisibleSettings(bool option)
