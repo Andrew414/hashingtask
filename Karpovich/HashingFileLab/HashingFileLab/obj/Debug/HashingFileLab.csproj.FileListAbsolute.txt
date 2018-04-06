@@ -1,0 +1,11 @@
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\bin\Debug\HashingFileLab.exe.config
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\bin\Debug\HashingFileLab.exe
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\bin\Debug\HashingFileLab.pdb
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\bin\Debug\Crc32.dll
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\obj\Debug\HashingFileLab.csprojResolveAssemblyReference.cache
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\obj\Debug\HashingFileLab.Form1.resources
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\obj\Debug\HashingFileLab.Properties.Resources.resources
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\obj\Debug\HashingFileLab.csproj.GenerateResource.Cache
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\obj\Debug\HashingFileLab.csproj.CoreCompileInputs.cache
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\obj\Debug\HashingFileLab.exe
+C:\Users\vlad3\source\repos\HashingFileLab\HashingFileLab\obj\Debug\HashingFileLab.pdb
