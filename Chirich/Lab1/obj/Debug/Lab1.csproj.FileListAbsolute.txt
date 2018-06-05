@@ -1,0 +1,8 @@
+C:\Users\vlad3\OneDrive\Рабочий стол\Lab1\Lab1\bin\Debug\Lab1.exe.config
+C:\Users\vlad3\OneDrive\Рабочий стол\Lab1\Lab1\bin\Debug\Lab1.exe
+C:\Users\vlad3\OneDrive\Рабочий стол\Lab1\Lab1\bin\Debug\Lab1.pdb
+C:\Users\vlad3\OneDrive\Рабочий стол\Lab1\Lab1\obj\Debug\Lab1.csprojResolveAssemblyReference.cache
+C:\Users\vlad3\OneDrive\Рабочий стол\Lab1\Lab1\obj\Debug\Lab1.csproj.CoreCompileInputs.cache
+C:\Users\vlad3\OneDrive\Рабочий стол\Lab1\Lab1\obj\Debug\Lab1.exe
+C:\Users\vlad3\OneDrive\Рабочий стол\Lab1\Lab1\obj\Debug\Lab1.pdb
+C:\Users\vlad3\OneDrive\Рабочий стол\Lab1\Lab1\bin\Debug\Crc32.dll
